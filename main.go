@@ -39,7 +39,7 @@ func main() {
 	}
 
 	if gpu {
-		gopsutil.GPUMonitorInit()
+		go gopsutil.GPUMonitorInit()
 	}
 
 	go send(ip + ":" + port)
