@@ -179,7 +179,11 @@ func GPUMonitorInit() {
 				if err != nil {
 					log.Panicf("Error getting device %d status: %v\n", i, err)
 				}
-				GPUStatus[i] = st
+				if len(GPUStatus) < i+1 {
+					GPUStatus = append(GPUStatus, st)
+				} else {
+					GPUStatus[i] = st
+				}
 			}
 		case <-sigs:
 			return
