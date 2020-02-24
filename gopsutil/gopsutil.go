@@ -121,6 +121,9 @@ func GetDiskIOJSON() (ioBytes []byte, err error) {
 }
 
 func GetGPUStatusJSON() ([]byte, error) {
+	if len(GPUStatus) < 1 {
+		return []byte{}, nil
+	}
 	csBytes, err := json.Marshal(GPUStatus[0])
 	if err != nil {
 		return csBytes, err
