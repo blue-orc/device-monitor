@@ -118,7 +118,7 @@ func GetDiskIOJSON() (ioBytes []byte, err error) {
 	return
 }
 
-var GPUStatus []*nvml.DeviceStatus
+var GPUStatus []nvml.DeviceStatus
 
 func GetGPUStatusJSON() ([]byte, error) {
 	csBytes, err := json.Marshal(GPUStatus)
@@ -180,9 +180,9 @@ func GPUMonitorInit() {
 					log.Panicf("Error getting device %d status: %v\n", i, err)
 				}
 				if len(GPUStatus) < i+1 {
-					GPUStatus = append(GPUStatus, st)
+					GPUStatus = append(GPUStatus, *st)
 				} else {
-					GPUStatus[i] = st
+					GPUStatus[i] = *st
 				}
 			}
 		case <-sigs:
