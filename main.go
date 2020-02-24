@@ -11,12 +11,23 @@ import (
 	"time"
 )
 
+var cpu bool
+var disk bool
+var gpu bool
+var net bool
+
 func main() {
 	var ip string
 	flag.StringVar(&ip, "ip", "unset", "String representing ip address for api")
 
 	var port string
 	flag.StringVar(&port, "port", "unset", "String representing port for api")
+
+	flag.BoolVar(&cpu, "cpu", false, "Enable CPU monitor")
+	flag.BoolVar(&gpu, "gpu", false, "Enable GPU monitor")
+	flag.BoolVar(&net, "net", false, "Enable net monitor")
+	flag.BoolVar(&disk, "disk", false, "Enable disk monitor")
+
 	flag.Parse()
 
 	if ip == "" || ip == "unset" {
@@ -27,28 +38,69 @@ func main() {
 		log.Fatal("port flag is not set")
 	}
 
+	if gpu {
+		gopsutil.GPUMonitorInit()
+	}
+
 	go send(ip + ":" + port)
 	fmt.Println("Device monitor started")
 	select {} // block forever
 }
 
 func send(dest string) {
-	dJSON, err := gopsutil.GetDiskIOJSON()
-	dReader := bytes.NewReader(dJSON)
-	if err != nil {
-		fmt.Println("send: " + err.Error())
-		return
+	if disk {
+		dJSON, err := gopsutil.GetDiskIOJSON()
+		if err != nil {
+			fmt.Println("send disk: " + err.Error())
+			return
+		}
+		dReader := bytes.NewReader(dJSON)
+		_, err = http.Post("http://"+dest+"/disk", "application/json", dReader)
+		if err != nil {
+			fmt.Println("send disk: " + err.Error())
+		}
 	}
-	_, err = http.Post("http://"+dest+"/disk", "application/json", dReader)
-	if err != nil {
-		fmt.Println("send: " + err.Error())
+
+	if net {
+		nJSON, err := gopsutil.GetNetIOJSON()
+		if err != nil {
+			fmt.Println("send net: " + err.Error())
+			return
+		}
+		nReader := bytes.NewReader(nJSON)
+		_, err = http.Post("http://"+dest+"/net", "application/json", nReader)
+		if err != nil {
+			fmt.Println("send net: " + err.Error())
+			return
+		}
 	}
-	nJSON, err := gopsutil.GetNetIOJSON()
-	nReader := bytes.NewReader(nJSON)
-	_, err = http.Post("http://"+dest+"/net", "application/json", nReader)
-	if err != nil {
-		fmt.Println("send: " + err.Error())
-		return
+
+	if cpu {
+		cJSON, err := gopsutil.GetCPUMemoryUtilizationJSON()
+		if err != nil {
+			fmt.Println("send cpu: " + err.Error())
+			return
+		}
+		cReader := bytes.NewReader(cJSON)
+		_, err = http.Post("http://"+dest+"/cpu", "application/json", cReader)
+		if err != nil {
+			fmt.Println("send cpu: " + err.Error())
+			return
+		}
+	}
+
+	if gpu {
+		gJSON, err := gopsutil.GetGPUStatusJSON()
+		if err != nil {
+			fmt.Println("send gpu: " + err.Error())
+			return
+		}
+		gReader := bytes.NewReader(gJSON)
+		_, err = http.Post("http://"+dest+"/gpu", "application/json", gReader)
+		if err != nil {
+			fmt.Println("send gpu: " + err.Error())
+			return
+		}
 	}
 
 	time.Sleep(time.Second)
