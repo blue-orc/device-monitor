@@ -22,6 +22,8 @@ type CPUStatus struct {
 	CPUPercent []float64
 }
 
+var GPUStatus []nvml.DeviceStatus
+
 func GetCPUMemoryUtilizationJSON() ([]byte, error) {
 	var c CPUStatus
 	pct, err := GetCPUPercent()
@@ -118,8 +120,6 @@ func GetDiskIOJSON() (ioBytes []byte, err error) {
 	return
 }
 
-var GPUStatus []nvml.DeviceStatus
-
 func GetGPUStatusJSON() ([]byte, error) {
 	csBytes, err := json.Marshal(GPUStatus)
 	if err != nil {
@@ -165,6 +165,10 @@ func GPUMonitorInit() {
 		devices = append(devices, device)
 	}
 
+	for _, _ = range devices {
+		GPUStatus = append(GPUStatus, nvml.DeviceStatus{})
+	}
+
 	sigs := make(chan os.Signal, 1)
 	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
 
@@ -179,11 +183,7 @@ func GPUMonitorInit() {
 				if err != nil {
 					log.Panicf("Error getting device %d status: %v\n", i, err)
 				}
-				if len(GPUStatus) < i+1 {
-					GPUStatus = append(GPUStatus, *st)
-				} else {
-					GPUStatus[i] = *st
-				}
+				GPUStatus[i] = *st
 			}
 		case <-sigs:
 			return
