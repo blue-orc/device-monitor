@@ -7,7 +7,6 @@ import (
 	"github.com/NVIDIA/gpu-monitoring-tools/bindings/go/nvml"
 	"github.com/shirou/gopsutil/disk"
 	"github.com/shirou/gopsutil/net"
-	"gpu-demonstration-api/models"
 	"log"
 	"os"
 	"os/signal"
@@ -24,7 +23,7 @@ type CPUStatus struct {
 }
 
 func GetCPUMemoryUtilizationJSON() ([]byte, error) {
-	var c models.CPUStatus
+	var c CPUStatus
 	pct, err := GetCPUPercent()
 	if err != nil {
 		return nil, err
