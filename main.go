@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"bytes"
 	"device-monitor/gopsutil"
 	"flag"
@@ -8,6 +9,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -44,7 +46,21 @@ func main() {
 
 	go send(ip + ":" + port)
 	fmt.Println("Device monitor started")
+
 	select {} // block forever
+}
+
+func checkRunScript() {
+	reader := bufio.NewReader(os.Stdin)
+
+	for {
+		fmt.Print("Run Training Script -> ")
+		text, _ := reader.ReadString('\n')
+		// convert CRLF to LF
+		text = strings.Replace(text, "\n", "", -1)
+
+		pythonJobRunner.Run()
+	}
 }
 
 func send(dest string) {
