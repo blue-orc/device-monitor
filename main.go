@@ -47,7 +47,7 @@ func main() {
 
 	go send(ip + ":" + port)
 	fmt.Println("Device monitor started")
-
+	checkRunScript()
 	select {} // block forever
 }
 
