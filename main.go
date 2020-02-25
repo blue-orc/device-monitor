@@ -18,6 +18,7 @@ var cpu bool
 var disk bool
 var gpu bool
 var net bool
+var training bool
 
 func main() {
 	var ip string
@@ -30,6 +31,7 @@ func main() {
 	flag.BoolVar(&gpu, "gpu", false, "Enable GPU monitor")
 	flag.BoolVar(&net, "net", false, "Enable net monitor")
 	flag.BoolVar(&disk, "disk", false, "Enable disk monitor")
+	flag.BoolVar(&training, "training", false, "Enable training monitor")
 
 	flag.Parse()
 
@@ -116,6 +118,20 @@ func send(dest string) {
 		_, err = http.Post("http://"+dest+"/gpu", "application/json", gReader)
 		if err != nil {
 			fmt.Println("send gpu: " + err.Error())
+			return
+		}
+	}
+
+	if training {
+		tJSON, err := pythonJobRunner.GetStatusJSON()
+		if err != nil {
+			fmt.Println("send training: " + err.Error())
+			return
+		}
+		tReader := bytes.NewReader(tJSON)
+		_, err = http.Post("http://"+dest+"/training", "application/json", tReader)
+		if err != nil {
+			fmt.Println("send training: " + err.Error())
 			return
 		}
 	}
