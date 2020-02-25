@@ -39,7 +39,7 @@ func GetStatusJSON() ([]byte, error) {
 	return sBytes, nil
 }
 
-func Run(scriptID int, epochs int) {
+func Run() {
 	wd, err := os.Getwd()
 	if err != nil {
 		fmt.Println("main: %s", err.Error())
