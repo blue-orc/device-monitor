@@ -11,6 +11,8 @@ import torch.distributed as dist
 from apex.parallel import DistributedDataParallel as DDP
 from apex import amp
 
+depth = 900
+
 def writeOutput(key, value):
     separator = ":"
     print(key + separator + str(value))
@@ -30,7 +32,7 @@ def main():
     args = parser.parse_args()
     args.world_size = args.gpus * args.nodes
 
-    depth = 900
+
     writeOutput("Status", "Running")
     writeOutput("Epochs", args.epochs)
     writeOutput("NumberOfWorkers", 4)
