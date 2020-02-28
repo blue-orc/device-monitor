@@ -30,12 +30,13 @@ def main():
     args = parser.parse_args()
     args.world_size = args.gpus * args.nodes
 
+    depth = 900
     writeOutput("Status", "Running")
     writeOutput("Epochs", args.epochs)
     writeOutput("NumberOfWorkers", 4)
     writeOutput("NumberOfFiles", 1)
     writeOutput("BatchSize", 2000)
-    writeOutput("Depth", 300)
+    writeOutput("Depth", depth)
     writeOutput("Layers", 2)
     writeOutput("LearningRate", 0.001)
     writeOutput("TrainingScript", "distributed-gpu.py")
@@ -47,12 +48,12 @@ class ConvNet(nn.Module):
     def __init__(self, num_classes=10):
         super(ConvNet, self).__init__()
         self.layer1 = nn.Sequential(
-            nn.Conv2d(1, 300, kernel_size=5, stride=1, padding=2),
-            nn.BatchNorm2d(300),
+            nn.Conv2d(1, depth, kernel_size=5, stride=1, padding=2),
+            nn.BatchNorm2d(depth),
             nn.ReLU(),
             nn.MaxPool2d(kernel_size=2, stride=2))
         self.layer2 = nn.Sequential(
-            nn.Conv2d(300, 32, kernel_size=5, stride=1, padding=2),
+            nn.Conv2d(depth, 32, kernel_size=5, stride=1, padding=2),
             nn.BatchNorm2d(32),
             nn.ReLU(),
             nn.MaxPool2d(kernel_size=2, stride=2))
