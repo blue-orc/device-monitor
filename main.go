@@ -21,6 +21,9 @@ var net bool
 var training bool
 var distributed bool
 
+var distNodes int
+var distGpus int
+
 func main() {
 	var ip string
 	flag.StringVar(&ip, "ip", "unset", "String representing ip address for api")
@@ -34,6 +37,9 @@ func main() {
 	flag.BoolVar(&disk, "disk", false, "Enable disk monitor")
 	flag.BoolVar(&training, "training", false, "Enable training monitor")
 	flag.BoolVar(&distributed, "distributed", false, "Distributed monitor script")
+
+	flag.IntVar(&distNodes, "distributed nodes", 1, "Number of distributed nodes")
+	flag.IntVar(&distGpus, "distributed gpus", 1, "Number of distributed gpus per node")
 
 	flag.Parse()
 
@@ -66,9 +72,9 @@ func checkRunScript() {
 		// convert CRLF to LF
 		text = strings.Replace(text, "\n", "", -1)
 		if distributed {
-			pythonJobRunner.Run(true)
+			pythonJobRunner.Run(true, distNodes, distGpus)
 		} else {
-			pythonJobRunner.Run(false)
+			pythonJobRunner.Run(false, distNodes, distGpus)
 		}
 	}
 }

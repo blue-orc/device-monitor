@@ -38,7 +38,7 @@ func GetStatusJSON() ([]byte, error) {
 	return sBytes, nil
 }
 
-func Run(distributed bool) {
+func Run(distributed bool, distNodes int, distGpus int) {
 	wd, err := os.Getwd()
 	if err != nil {
 		fmt.Println("main: %s", err.Error())
@@ -52,7 +52,7 @@ func Run(distributed bool) {
 	var cmd *exec.Cmd
 
 	if distributed {
-		cmd = exec.Command("python3", wd+"/distributed-gpu.py")
+		cmd = exec.Command("python3", wd+"/distributed-gpu.py", "-n", fmt.Sprintf("%d", distNodes), "-g", fmt.Sprintf("%d", distGpus), "-nr", fmt.Sprintf("%d", 0))
 	} else {
 		cmd = exec.Command("python3", wd+"/cifar-gpu.py")
 	}
