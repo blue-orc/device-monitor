@@ -52,7 +52,7 @@ func Run(distributed bool, distNodes int, distGpus int) {
 	var cmd *exec.Cmd
 
 	if distributed {
-		cmd = exec.Command("python3", wd+"/distributed-gpu.py", "-n", fmt.Sprintf("%d", distNodes), "-g", fmt.Sprintf("%d", distGpus), "-nr", fmt.Sprintf("%d", 0), "--epochs", fmt.Sprintf("%", 10))
+		cmd = exec.Command("python3", wd+"/distributed-gpu.py", "-n", fmt.Sprintf("%d", distNodes), "-g", fmt.Sprintf("%d", distGpus))
 	} else {
 		cmd = exec.Command("python3", wd+"/cifar-gpu.py")
 	}
