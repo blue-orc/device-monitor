@@ -104,7 +104,7 @@ def train(gpu, args):
     total_step = len(train_loader)
     writeOutput("Step", "Training")
     writeOutput("NumberOfFiles", 1)
-    writeOutput("ImagesPerFile", 60000)
+    writeOutput("ImagesPerFile", total_step)
     writeOutput("CurrentFileIndex", 1)
     for epoch in range(args.epochs):
         for i, (images, labels) in enumerate(train_loader):
@@ -118,8 +118,8 @@ def train(gpu, args):
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
-            if (i + 1) % 10 == 0 and gpu == 0:
-                writeOutput("CurrentImageIndex", i)
+            if (i + 1) % 50 == 0 and gpu == 0:
+                writeOutput("CurrentImageIndex", i+1)
                 writeOutput("CurrentEpoch", epoch+1)
                 writeOutput("Loss", loss.item())
                 #print('Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}'.format(epoch + 1, args.epochs, i + 1, total_step,
