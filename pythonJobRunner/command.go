@@ -11,7 +11,6 @@ import (
 )
 
 type TrainingStatus struct {
-	CurrentFile       string
 	Step              string
 	TrainingScript    string
 	BatchSize         string
@@ -39,7 +38,7 @@ func GetStatusJSON() ([]byte, error) {
 	return sBytes, nil
 }
 
-func Run() {
+func Run(distributed bool) {
 	wd, err := os.Getwd()
 	if err != nil {
 		fmt.Println("main: %s", err.Error())
@@ -50,7 +49,13 @@ func Run() {
 
 	Status.Status = "Running"
 	//cmd := exec.Command("python3", "/home/ubuntu/go/src/gpu-demonstration-api/python-job-runner/scripts/pytorch-training-gpu.py")
-	cmd := exec.Command("python3", wd+"/cifar-gpu.py")
+	var cmd *exec.Cmd
+
+	if distributed {
+		cmd = exec.Command("python3", wd+"/distributed-gpu.py")
+	} else {
+		cmd = exec.Command("python3", wd+"/cifar-gpu.py")
+	}
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
 		fmt.Println("Run Python Script Error: " + err.Error())
@@ -82,9 +87,7 @@ func updateStatus(r io.Reader) {
 	for scanner.Scan() {
 		txt := scanner.Text()
 		res := strings.Split(txt, ":")
-		if res[0] == "CurrentFile" {
-			Status.CurrentFile = res[1]
-		} else if res[0] == "Step" {
+		if res[0] == "Step" {
 			Status.Step = res[1]
 		} else if res[0] == "TrainingScript" {
 			Status.TrainingScript = res[1]

@@ -120,7 +120,7 @@ for p in processes:
 
 writeOutput("Step", "Training")
 writeOutput("NumberOfFiles", len(D))
-writeOutput("ImagesPerFile", len(D[0]))
+writeOutput("ImagesPerFile", len(10000))
 
 # Loop over the dataset multiple times. Change this value to run container longer.
 for epoch in range(epochs):  

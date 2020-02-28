@@ -19,6 +19,7 @@ var disk bool
 var gpu bool
 var net bool
 var training bool
+var distributed bool
 
 func main() {
 	var ip string
@@ -32,6 +33,7 @@ func main() {
 	flag.BoolVar(&net, "net", false, "Enable net monitor")
 	flag.BoolVar(&disk, "disk", false, "Enable disk monitor")
 	flag.BoolVar(&training, "training", false, "Enable training monitor")
+	flag.BoolVar(&distributed, "distributed", false, "Distributed monitor script")
 
 	flag.Parse()
 
@@ -63,8 +65,11 @@ func checkRunScript() {
 		text, _ := reader.ReadString('\n')
 		// convert CRLF to LF
 		text = strings.Replace(text, "\n", "", -1)
-
-		pythonJobRunner.Run()
+		if distributed {
+			pythonJobRunner.Run(true)
+		} else {
+			pythonJobRunner.Run(false)
+		}
 	}
 }
 
