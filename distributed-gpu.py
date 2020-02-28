@@ -118,7 +118,7 @@ def train(gpu, args):
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
-            if (i + 1) % 50 == 0 and gpu == 0:
+            if (i + 1) % 100 == 0 and gpu == 0:
                 writeOutput("CurrentImageIndex", i+1)
                 writeOutput("CurrentEpoch", epoch+1)
                 writeOutput("Loss", loss.item())
