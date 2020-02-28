@@ -38,8 +38,8 @@ func main() {
 	flag.BoolVar(&training, "training", false, "Enable training monitor")
 	flag.BoolVar(&distributed, "distributed", false, "Distributed monitor script")
 
-	flag.IntVar(&distNodes, "distributed nodes", 1, "Number of distributed nodes")
-	flag.IntVar(&distGpus, "distributed gpus", 1, "Number of distributed gpus per node")
+	flag.IntVar(&distNodes, "nodes", 1, "Number of distributed nodes")
+	flag.IntVar(&distGpus, "gpus", 1, "Number of distributed gpus per node")
 
 	flag.Parse()
 
