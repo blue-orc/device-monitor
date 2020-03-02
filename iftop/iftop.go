@@ -2,6 +2,7 @@ package iftop
 
 import (
 	"bufio"
+	"encoding/json"
 	"fmt"
 	"io"
 	"os/exec"
@@ -51,6 +52,14 @@ func Run() {
 	go updateStatus(stderr)
 	cmd.Wait()
 	Status.Status = "Finished"
+}
+
+func GetIftopStatusJSON() ([]byte, error) {
+	iBytes, err := json.Marshal(Status)
+	if err != nil {
+		return iBytes, err
+	}
+	return iBytes, nil
 }
 
 func updateStatus(r io.Reader) {

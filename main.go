@@ -100,6 +100,20 @@ func send(dest string) {
 		}
 	}
 
+	if iftopVar {
+		iJSON, err := iftop.GetIftopStatusJSON()
+		if err != nil {
+			fmt.Println("sent iftop: " + err.Error())
+			return
+		}
+		iReader := bytes.NewReader(iJSON)
+		_, err = http.Post("http://"+dest+"/iftop", "application/json", iReader)
+		if err != nil {
+			fmt.Println("send iftop: " + err.Error())
+			return
+		}
+	}
+
 	if net {
 		nJSON, err := gopsutil.GetNetIOJSON()
 		if err != nil {
