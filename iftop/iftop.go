@@ -57,7 +57,7 @@ func updateStatus(r io.Reader) {
 	scanner := bufio.NewScanner(r)
 	for scanner.Scan() {
 		txt := scanner.Text()
-		res := strings.Index(txt, "Total recieve rate:")
+		res := strings.Index(txt, "Total receive rate:")
 		if res == -1 {
 			continue
 		}
