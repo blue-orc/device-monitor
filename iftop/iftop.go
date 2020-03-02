@@ -72,19 +72,19 @@ func updateStatus(r io.Reader) {
 		fmt.Println(string(sub3[len(sub3)-1]))
 		size := string(sub3[len(sub3)-1])
 		if size == "K" {
-			v, err := strconv.ParseFloat(sub3[0:len(sub3)], 64)
+			v, err := strconv.ParseFloat(sub3[0:len(sub3)-1], 64)
 			if err != nil {
 				fmt.Println("Update status: " + err.Error())
 			}
 			v = v * 1000
 		} else if size == "M" {
-			v, err := strconv.ParseFloat(sub3[0:len(sub3)], 64)
+			v, err := strconv.ParseFloat(sub3[0:len(sub3)-1], 64)
 			if err != nil {
 				fmt.Println("Update status: " + err.Error())
 			}
 			v = v * 1000000
 		} else if size == "G" {
-			v, err := strconv.ParseFloat(sub3[0:len(sub3)], 64)
+			v, err := strconv.ParseFloat(sub3[0:len(sub3)-1], 64)
 			if err != nil {
 				fmt.Println("Update status: " + err.Error())
 			}
