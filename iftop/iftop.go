@@ -70,7 +70,7 @@ func updateStatus(r io.Reader) {
 		fmt.Println(sub3)
 		var v float64
 		fmt.Println(string(sub3[len(sub3)-1]))
-		size : = string(sub3[len(sub3)-1])
+		size := string(sub3[len(sub3)-1])
 		if size == "K" {
 			v, err := strconv.ParseFloat(sub3[0:len(sub3)], 64)
 			if err != nil {
