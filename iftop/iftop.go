@@ -59,7 +59,7 @@ func updateStatus(r io.Reader) {
 		res := strings.IndexAny(txt, "Total send rate:")
 		sub1 := txt[res : len(txt)-1]
 		n := strings.IndexRune(sub1, '\n')
-		sub2 := sub1[0:n]
+		sub2 := sub1[0 : n-1]
 		fmt.Println(sub2)
 	}
 }
