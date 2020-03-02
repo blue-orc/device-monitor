@@ -56,10 +56,10 @@ func updateStatus(r io.Reader) {
 	scanner := bufio.NewScanner(r)
 	for scanner.Scan() {
 		txt := scanner.Text()
-		res := strings.IndexAny(txt, "Total send rate:")
+		res := strings.Index(txt, "Total send rate:")
 		sub1 := txt[res : len(txt)-1]
-		n := strings.Index(sub1, "b")
-		sub2 := sub1[0 : n-1]
-		fmt.Println(sub2)
+		//n := strings.Index(sub1, "b")
+		//sub2 := sub1[0 : n-1]
+		fmt.Println(sub1)
 	}
 }
