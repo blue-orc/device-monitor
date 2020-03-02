@@ -76,8 +76,6 @@ func updateStatus(r io.Reader) {
 		res = strings.Index(sub2, "b")
 		sub3 := sub2[0:res]
 		sub3 = strings.TrimSpace(sub3)
-		fmt.Println(sub3)
-		fmt.Println(string(sub3[len(sub3)-1]))
 		size := string(sub3[len(sub3)-1])
 		if size == "K" {
 			v, err := strconv.ParseFloat(sub3[0:len(sub3)-1], 64)
