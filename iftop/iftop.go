@@ -10,8 +10,8 @@ import (
 )
 
 type IftopStatus struct {
-	Status      string
-	RecieveRate float64
+	Status            string
+	BytesReceivedRate float64
 }
 
 var Status IftopStatus
@@ -76,21 +76,21 @@ func updateStatus(r io.Reader) {
 				fmt.Println("Update status: " + err.Error())
 			}
 			v = v * 1000
-			Status.RecieveRate = v
+			Status.BytesReceivedRate = v
 		} else if size == "M" {
 			v, err := strconv.ParseFloat(sub3[0:len(sub3)-1], 64)
 			if err != nil {
 				fmt.Println("Update status: " + err.Error())
 			}
 			v = v * 1000000
-			Status.RecieveRate = v
+			Status.BytesReceivedRate = v
 		} else if size == "G" {
 			v, err := strconv.ParseFloat(sub3[0:len(sub3)-1], 64)
 			if err != nil {
 				fmt.Println("Update status: " + err.Error())
 			}
 			v = v * 1000000000
-			Status.RecieveRate = v
+			Status.BytesReceivedRate = v
 		}
 	}
 }
