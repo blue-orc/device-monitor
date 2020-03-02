@@ -60,7 +60,7 @@ func updateStatus(r io.Reader) {
 		res := strings.Index(txt, "Total send rate:")
 		if res == -1 {
 			fmt.Println("Could not find string")
-			return
+			continue
 		}
 		sub1 := txt[res : len(txt)-1]
 		//n := strings.Index(sub1, "b")
