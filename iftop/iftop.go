@@ -92,6 +92,5 @@ func updateStatus(r io.Reader) {
 			v = v * 1000000000
 			Status.RecieveRate = v
 		}
-		fmt.Println(Status.RecieveRate)
 	}
 }
