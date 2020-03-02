@@ -61,12 +61,12 @@ func updateStatus(r io.Reader) {
 			continue
 		}
 		sub1 := txt[res:len(txt)]
-		fmt.Println(sub1)
 		res = strings.Index(sub1, "b")
-		sub2 := sub1[res:len(sub1)]
+		sub2 := sub1[res+1 : len(sub1)]
 		fmt.Println(sub2)
 		res = strings.Index(sub2, "b")
 		sub3 := sub2[0:res]
+		sub3 = strings.TrimSpace(sub3)
 		fmt.Println(sub3)
 	}
 }
