@@ -69,7 +69,7 @@ func updateStatus(r io.Reader) {
 		sub3 = strings.TrimSpace(sub3)
 		fmt.Println(sub3)
 		var v float64
-		fmt.Println(sub3[len(sub3)-1])
+		fmt.Println(string(sub3[len(sub3)-1]))
 		if sub3[len(sub3)-1] == byte('K') {
 			v, err := strconv.ParseFloat(sub3[0:len(sub3)-1], 64)
 			if err != nil {
