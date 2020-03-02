@@ -70,20 +70,21 @@ func updateStatus(r io.Reader) {
 		fmt.Println(sub3)
 		var v float64
 		fmt.Println(string(sub3[len(sub3)-1]))
-		if sub3[len(sub3)-1] == byte('K') {
-			v, err := strconv.ParseFloat(sub3[0:len(sub3)-1], 64)
+		size : = string(sub3[len(sub3)-1])
+		if size == "K" {
+			v, err := strconv.ParseFloat(sub3[0:len(sub3)], 64)
 			if err != nil {
 				fmt.Println("Update status: " + err.Error())
 			}
 			v = v * 1000
-		} else if sub3[len(sub3)-1] == byte('M') {
-			v, err := strconv.ParseFloat(sub3[0:len(sub3)-1], 64)
+		} else if size == "M" {
+			v, err := strconv.ParseFloat(sub3[0:len(sub3)], 64)
 			if err != nil {
 				fmt.Println("Update status: " + err.Error())
 			}
 			v = v * 1000000
-		} else if sub3[len(sub3)-1] == byte('G') {
-			v, err := strconv.ParseFloat(sub3[0:len(sub3)-1], 64)
+		} else if size == "G" {
+			v, err := strconv.ParseFloat(sub3[0:len(sub3)], 64)
 			if err != nil {
 				fmt.Println("Update status: " + err.Error())
 			}
