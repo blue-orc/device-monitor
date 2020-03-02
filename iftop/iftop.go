@@ -5,12 +5,13 @@ import (
 	"fmt"
 	"io"
 	"os/exec"
+	"strconv"
 	"strings"
 )
 
 type IftopStatus struct {
 	Status      string
-	RecieveRate string
+	RecieveRate float64
 }
 
 var Status IftopStatus
@@ -56,17 +57,38 @@ func updateStatus(r io.Reader) {
 	scanner := bufio.NewScanner(r)
 	for scanner.Scan() {
 		txt := scanner.Text()
-		res := strings.Index(txt, "Total send rate:")
+		res := strings.Index(txt, "Total recieve rate:")
 		if res == -1 {
 			continue
 		}
 		sub1 := txt[res:len(txt)]
 		res = strings.Index(sub1, "b")
 		sub2 := sub1[res+1 : len(sub1)]
-		fmt.Println(sub2)
 		res = strings.Index(sub2, "b")
 		sub3 := sub2[0:res]
 		sub3 = strings.TrimSpace(sub3)
-		fmt.Println(sub3)
+
+		var v float64
+		if sub3[len(sub3)-1] == byte('K') {
+			v, err := strconv.ParseFloat(sub3[0:len(sub3)], 64)
+			if err != nil {
+				fmt.Println("Update status: " + err.Error())
+			}
+			v = v * 1000
+		} else if sub3[len(sub3)-1] == byte('M') {
+			v, err := strconv.ParseFloat(sub3[0:len(sub3)], 64)
+			if err != nil {
+				fmt.Println("Update status: " + err.Error())
+			}
+			v = v * 1000000
+		} else if sub3[len(sub3)-1] == byte('G') {
+			v, err := strconv.ParseFloat(sub3[0:len(sub3)], 64)
+			if err != nil {
+				fmt.Println("Update status: " + err.Error())
+			}
+			v = v * 1000000000
+		}
+		fmt.Println(v)
+		Status.RecieveRate = v
 	}
 }
