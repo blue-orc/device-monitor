@@ -102,6 +102,7 @@ func send(dest string) {
 
 	if iftopVar {
 		iJSON, err := iftop.GetIftopStatusJSON()
+		fmt.Println(string(iJSON))
 		if err != nil {
 			fmt.Println("sent iftop: " + err.Error())
 			return
