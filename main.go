@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"bytes"
 	"device-monitor/gopsutil"
+	"device-monitor/iftop"
 	"device-monitor/pythonJobRunner"
 	"flag"
 	"fmt"
@@ -20,6 +21,7 @@ var gpu bool
 var net bool
 var training bool
 var distributed bool
+var iftopVar bool
 
 var distNodes int
 var distGpus int
@@ -37,6 +39,7 @@ func main() {
 	flag.BoolVar(&disk, "disk", false, "Enable disk monitor")
 	flag.BoolVar(&training, "training", false, "Enable training monitor")
 	flag.BoolVar(&distributed, "distributed", false, "Distributed monitor script")
+	flag.BoolVar(&iftopVar, "iftop", false, "Enable iftop tracking")
 
 	flag.IntVar(&distNodes, "nodes", 1, "Number of distributed nodes")
 	flag.IntVar(&distGpus, "gpus", 1, "Number of distributed gpus per node")
@@ -53,6 +56,10 @@ func main() {
 
 	if gpu {
 		go gopsutil.GPUMonitorInit()
+	}
+
+	if iftopVar {
+		go iftop.Run()
 	}
 
 	go send(ip + ":" + port)
