@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"os/exec"
+	"strings"
 )
 
 type IftopStatus struct {
@@ -55,6 +56,10 @@ func updateStatus(r io.Reader) {
 	scanner := bufio.NewScanner(r)
 	for scanner.Scan() {
 		txt := scanner.Text()
-		fmt.Println(txt)
+		res := strings.IndexAny(txt, "Total send rate:")
+		sub1 := txt[res : len(txt)-1]
+		n := strings.IndexRune(sub1, '\n')
+		sub2 := sub1[0:n]
+		fmt.Println(sub2)
 	}
 }
