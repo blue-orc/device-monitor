@@ -68,7 +68,6 @@ func updateStatus(r io.Reader) {
 		sub3 := sub2[0:res]
 		sub3 = strings.TrimSpace(sub3)
 		fmt.Println(sub3)
-		var v float64
 		fmt.Println(string(sub3[len(sub3)-1]))
 		size := string(sub3[len(sub3)-1])
 		if size == "K" {
@@ -77,20 +76,22 @@ func updateStatus(r io.Reader) {
 				fmt.Println("Update status: " + err.Error())
 			}
 			v = v * 1000
+			Status.RecieveRate = v
 		} else if size == "M" {
 			v, err := strconv.ParseFloat(sub3[0:len(sub3)-1], 64)
 			if err != nil {
 				fmt.Println("Update status: " + err.Error())
 			}
 			v = v * 1000000
+			Status.RecieveRate = v
 		} else if size == "G" {
 			v, err := strconv.ParseFloat(sub3[0:len(sub3)-1], 64)
 			if err != nil {
 				fmt.Println("Update status: " + err.Error())
 			}
 			v = v * 1000000000
+			Status.RecieveRate = v
 		}
-		fmt.Println(v)
-		Status.RecieveRate = v
+		fmt.Println(Status.RecieveRate)
 	}
 }
