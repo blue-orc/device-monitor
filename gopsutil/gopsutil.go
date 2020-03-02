@@ -75,7 +75,7 @@ func GetVirtualMemory() (*mem.VirtualMemoryStat, error) {
 }
 
 func GetNetIO() (i []net.IOCountersStat, err error) {
-	i, err = net.IOCounters(false)
+	i, err = net.IOCounters(true)
 	if err != nil {
 		fmt.Println("gopsutil.GetNetIO: " + err.Error())
 		return
